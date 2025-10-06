@@ -3,6 +3,8 @@ import express from "express";
 import https from "https";
 import dotenv from "dotenv";
 
+dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -40,12 +42,12 @@ async function getStudentInfo(id) {
     const response = await fetch(api, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
         action: "registration_tapregister",
         regkey: regKey,
-        studentid: id,
+        card_tag: id,
       }),
       agent: agent,
     });
