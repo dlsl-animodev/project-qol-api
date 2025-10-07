@@ -70,6 +70,7 @@ app.get("/api/student", async (req, res) => {
     const student = await getStudentInfo(id);
 
     if (isValid(student)) {
+      student.card_tag_uid = id;
       return res.json(student);
     } else {
       return res.status(404).json({ error: "Student not found" });
