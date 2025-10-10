@@ -1,5 +1,5 @@
 import cors from "cors";
-import express from "express";
+import express, { Request, Response } from "express";
 import https from "https";
 import dotenv from "dotenv";
 
@@ -21,7 +21,7 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-function isValid(object) {
+function isValid(object: { email_address: any }) {
   if (!object) return false;
 
   const email = object.email_address;
@@ -32,7 +32,7 @@ function isValid(object) {
   return true;
 }
 
-async function getStudentInfo(id) {
+async function getStudentInfo(id: any) {
   const api = "https://portal.dlsl.edu.ph/registration/event/helper.php";
 
   const regKey = process.env.REG_KEY;
@@ -46,11 +46,11 @@ async function getStudentInfo(id) {
       },
       body: new URLSearchParams({
         action: "registration_tapregister",
-        regkey: regKey,
-        card_tag: id,
+        regkey: regKey || "",
+        card_tag: String(id),
       }),
       agent: agent,
-    });
+    } as RequestInit);
 
     const data = await response.json();
     return data;
@@ -60,7 +60,7 @@ async function getStudentInfo(id) {
   }
 }
 
-app.get("/api/student", async (req, res) => {
+app.get("/api/student", async (req: Request, res: Response) => {
   try {
     const id = req.query.id;
     if (!id) {
@@ -74,23 +74,6 @@ app.get("/api/student", async (req, res) => {
 
       student.checkIn = new Date().toISOString();
 
-      // SAVE TO GOOGLE SHEETS
-      // https://script.google.com/macros/s/AKfycbwNizwY54c8YXMVpOBnmku4YYoKyu8dsTwNeNRWBH50qu6cCNdscxHFeRU-sEAsA_88/exec?gid=0
-
-      await fetch(
-        "https://script.google.com/macros/s/AKfycbwNizwY54c8YXMVpOBnmku4YYoKyu8dsTwNeNRWBH50qu6cCNdscxHFeRU-sEAsA_88/exec?gid=0",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(student),
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => console.log("Saved to Google Sheets:", data))
-        .catch((error) => console.error("Error saving to Google Sheets:", error));
-
       return res.json(student);
     } else {
       return res.status(404).json({ error: "Student not found" });
@@ -101,7 +84,7 @@ app.get("/api/student", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
+app.get("/", (_req: Request, res: Response) => {
   res.setHeader("Content-Type", "text/html");
   res.send(`
     <!DOCTYPE html>
@@ -208,11 +191,11 @@ app.get("/", (req, res) => {
   `);
 });
 
-app.use((req, res) => {
+app.use((req: Request, res: Response) => {
   res.status(404).json({ error: "Not found" });
 });
 
-app.use((err, req, res, next) => {
+app.use((err: any, req: Request, res: Response, next: any) => {
   console.error("Error:", err);
   res.status(500).json({ error: "Internal server error" });
 });
