@@ -2,12 +2,11 @@
   "name": "animodev-qol-backend",
   "version": "1.0.0",
   "description": "AnimoDev QOL Backend - Express API Server",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "ts-node index.ts",
+    "start": "node dist/index.js",
     "dev": "nodemon index.ts",
-    "build": "tsc",
-    "prod": "node dist/index.js"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
