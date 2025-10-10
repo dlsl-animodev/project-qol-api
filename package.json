@@ -4,8 +4,8 @@
   "description": "AnimoDev QOL Backend - Express API Server",
   "main": "index.ts",
   "scripts": {
-    "start": "nodemon src/index.ts",
-    "dev": "nodemon src/index.ts"
+    "start": "nodemon index.ts",
+    "dev": "nodemon index.ts"
   },
   "keywords": [],
   "author": "",
