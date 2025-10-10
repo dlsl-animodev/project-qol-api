@@ -71,6 +71,26 @@ app.get("/api/student", async (req, res) => {
 
     if (isValid(student)) {
       student.card_tag_uid = id;
+
+      student.checkIn = new Date().toISOString();
+
+      // SAVE TO GOOGLE SHEETS
+      // https://script.google.com/macros/s/AKfycbwNizwY54c8YXMVpOBnmku4YYoKyu8dsTwNeNRWBH50qu6cCNdscxHFeRU-sEAsA_88/exec?gid=0
+
+      await fetch(
+        "https://script.google.com/macros/s/AKfycbwNizwY54c8YXMVpOBnmku4YYoKyu8dsTwNeNRWBH50qu6cCNdscxHFeRU-sEAsA_88/exec?gid=0",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(student),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => console.log("Saved to Google Sheets:", data))
+        .catch((error) => console.error("Error saving to Google Sheets:", error));
+
       return res.json(student);
     } else {
       return res.status(404).json({ error: "Student not found" });
