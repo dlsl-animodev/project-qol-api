@@ -1,5 +1,5 @@
 import https from "https";
-import { config } from "../config/env";
+import { config } from "../config/config";
 
 export interface StudentInfo {
   email_address?: string;
