@@ -1,3 +1,6 @@
+## Student API Request Flow
+
+```
 Client Request
     ↓
 [index.ts]
@@ -29,3 +32,17 @@ Client Request
 [Error Handlers] (src/middleware/errorHandler.ts)
     ├── 404 Not Found
     └── 500 Internal Server Error
+```
+
+## Module Responsibilities
+
+| Module          | Responsibility                         | Dependencies            |
+| --------------- | -------------------------------------- | ----------------------- |
+| **Config**      | Environment variables & settings       | dotenv                  |
+| **Controllers** | Handle HTTP requests/responses         | Services, Utils         |
+| **Services**    | External API calls & business logic    | Config, https           |
+| **Routes**      | Define URL patterns                    | Controllers             |
+| **Middleware**  | Request preprocessing & error handling | -                       |
+| **Utils**       | Helper functions                       | -                       |
+| **App**         | Express configuration                  | All middleware & routes |
+| **Index**       | Server initialization                  | App, Config             |
