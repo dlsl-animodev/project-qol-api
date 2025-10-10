@@ -1,13 +1,9 @@
-# Request Flow Diagram
-
 ## Student API Request Flow
 
 ```
 Client Request
     ↓
 [index.ts]
-    ↓
-[src/index.ts] - Server starts
     ↓
 [src/app.ts] - Express app with middleware
     ↓
