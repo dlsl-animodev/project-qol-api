@@ -7,6 +7,8 @@ export const config = {
   regKey: process.env.REG_KEY,
   apiUrl: "https://portal.dlsl.edu.ph/registration/event/helper.php",
   nodeEnv: process.env.NODE_ENV || "development",
+  supabaseUrl: process.env.SUPABASE_URL,
+  supabaseKey: process.env.SUPABASE_KEY,
 };
 
 // Disable TLS certificate validation
