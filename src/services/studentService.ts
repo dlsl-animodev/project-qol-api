@@ -21,15 +21,22 @@ export async function getStudentInfo(
     // Try to find the student in the database first by cardTagUid (card_tag_uid)
     const cardTagUid = String(id);
 
-    const existing = await prisma.student.findFirst({
-      where: {
-        OR: [
-          { cardTagUid: cardTagUid },
-          { cardTag: Number.isFinite(Number(id)) ? Number(id) : undefined },
-          { schoolId: cardTagUid },
-        ],
-      },
-    });
+    let existing = null;
+    try {
+      existing = await prisma.student.findFirst({
+        where: {
+          OR: [
+            { cardTagUid: cardTagUid },
+            { cardTag: Number.isFinite(Number(id)) ? Number(id) : undefined },
+            { schoolId: cardTagUid },
+          ],
+        },
+      });
+    } catch (dbReadErr) {
+      // If DB read fails (DB down/overloaded), fall back to external API instead of throwing
+      console.error("Prisma read failed, falling back to API:", dbReadErr);
+      existing = null;
+    }
 
     if (existing) {
       // Build a response object similar to the upstream API so controller logic remains the same
@@ -46,6 +53,8 @@ export async function getStudentInfo(
 
       return result;
     }
+
+    // if not found in database, fetch from school api
     const agent = new https.Agent({ rejectUnauthorized: false });
 
     const response = await fetch(config.apiUrl, {
