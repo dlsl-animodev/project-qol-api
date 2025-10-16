@@ -13,7 +13,9 @@ export async function getStudent(
       return res.status(400).json({ error: "Missing id parameter" });
     }
 
+    console.log("[getStudent] fetching student for id=", id);
     const student = await getStudentInfo(id as string);
+    console.log("[getStudent] result=", student);
 
     if (isValidStudent(student)) {
       student.card_tag_uid = String(id);

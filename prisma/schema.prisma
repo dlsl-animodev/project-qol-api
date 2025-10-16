@@ -1,0 +1,25 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Student {
+  id             Int       @id @default(autoincrement())
+  schoolId       String    @unique @map("partner_id")
+  email          String?   @map("email_address")
+  department     String?
+  whitelist      String?
+  cardTag        Int?
+  cardTagUid     String?
+  regGuest       String?
+  regKey         Int?
+  guestFullname  String?
+  member         Json?
+  checkIn        DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
