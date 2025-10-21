@@ -22,16 +22,23 @@ Client Request
                   ├── Validate request
                   ↓
             [src/services/studentService.ts]
-                  ├── Fetch from external API
+                  ├── Search in database
+                  │      └── If found → return cached data
+                  │
+                  ├── If not found:
+                  │      ↓
+                  │  Fetch from external API
+                  │      ↓
+                  │  Validate response (src/utils/validation.ts)
+                  │      ↓
+                  │  Store new record in database
                   ↓
-            [src/utils/validation.ts]
-                  ├── Validate response
-                  ↓
-            Return JSON response
+            Return JSON response to client
     ↓
 [Error Handlers] (src/middleware/errorHandler.ts)
     ├── 404 Not Found
     └── 500 Internal Server Error
+
 ```
 
 ## Module Responsibilities
